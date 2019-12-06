@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="layer/layer.js"></script>
+    <script src="function.js"></script>
+</head>
+<body >
+    <h1>登录成功</h1>
+    <input type="button" value="search"  onclick="search()">
+    <div id="main">
+    </div>
+    <form action="/student/add">
+        name<input type="text" id="name"  name="name">
+        age<input type="text" id="age" name="age">
+        password<input type="password" id="password" name="password">
+        <input type="submit" value="添加" >
+    </form>
+    <input type="button" id="layer1" value="弹窗test" onclick="layer1()">
+</body>
+<script>
+    function layer1() {
+        // layer.msg("holle!!");
+        layer.open({
+            type:1,
+            title:'添加用户',
+            area:['600px','300px'],
+            shadeClose: true,
+            content: '\<\div style="padding:20px;"><form id="layer" action="" >\n' +
+                '        <div class="title">\n' +
+                '            <h2>用户信息</h2>\n' +
+                '        </div>\n' +
+                '        <p><label>用户名: </label><input type="input" id="name01" name="name" /></p>\n' +
+                '        <p><label>年  龄: </label><input type="input" id="age01" name="age" /></p>\n' +
+                '        <p><label>密  码: </label><input type="password" id="password01" name="password" />\n' +
+                '        <p><input type="button" value=" 添加 " onclick="add()" /></p>\n' +
+                '    </form><\/div>'
+        });
+    }
+</script>
+<script>
+function add(){
+    var age = $("#age01").val();
+    var name = $("#name01").val();
+    var password = $("#password01").val();
+    console.log(name,age,password);
+    $.ajax({
+        url:"/student/add",
+        data:{
+            'age':age,
+            'name':name,
+            'password':password
+        },
+        dataType:"json",
+        async:true,
+        success:function (result) {
+            if(result){
+                layer.msg("添加成功！！！" ,{icon:1,time:1500});
+            }
+            else{
+                layer.msg("添加失败！！！",{icon:2,time:1500},layer1());
+            }
+        }
+    })
+}
+</script>
+</html>
